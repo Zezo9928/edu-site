@@ -2,17 +2,62 @@
 <html lang="ar">
 <head>
   <meta charset="UTF-8">
-  <title>موقعي التعليمي</title>
+  <title>موقع تعليمي</title>
 </head>
-<body style="text-align:center;font-family:Arial">
 
-  <h1>أهلاً بيك</h1>
-  <p>موقع تعليمي</p>
+<body style="font-family:Arial; text-align:center; margin-top:40px;">
 
-  <a href="https://wa.me/201227387099" 
-     style="background:#25D366;color:white;padding:15px;border-radius:8px;text-decoration:none;">
-    تواصل واتساب
-  </a>
+  <div id="login">
+    <h2>تسجيل الدخول</h2>
+    <input type="text" id="user" placeholder="اسم المستخدم"><br><br>
+    <input type="password" id="pass" placeholder="كلمة المرور"><br><br>
+    <button onclick="login()">دخول</button>
+  </div>
 
-</body>
-</html>
+  <div id="main" style="display:none;">
+    <h2 id="welcome"></h2>
+
+    <button onclick="openCamera()">تشغيل الكاميرا</button>
+    <button onclick="openMic()">تشغيل الميكروفون</button>
+
+    <br><br>
+    <video id="video" width="300" autoplay></video>
+    <br><br>
+    <button onclick="logout()">تسجيل خروج</button>
+  </div>
+
+  <script>
+    // لازم بيانات محفوظة
+    if (localStorage.getItem("user")) {
+      showMain();
+    }
+
+    function login() {
+      let u = document.getElementById("user").value;
+      let p = document.getElementById("pass").value;
+
+      if (u && p) {
+        localStorage.setItem("user", u);
+        localStorage.setItem("pass", p);
+        showMain();
+      } else {
+        alert("ادخل البيانات كاملة");
+      }
+    }
+
+    function showMain() {
+      document.getElementById("login").style.display = "none";
+      document.getElementById("main").style.display = "block";
+      document.getElementById("welcome").innerText =
+        "مرحبًا " + localStorage.getItem("user");
+    }
+
+    function logout() {
+      localStorage.clear();
+      location.reload();
+    }
+
+    function openCamera() {
+      navigator.mediaDevices.getUserMedia({ video: true })
+        .then(stream => {
+          document.getElementBy
